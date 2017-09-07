@@ -1,5 +1,9 @@
-Formation Angular (v2.0.0) - Exercices
---------------------------------------
+Formation Angular - Exercices
+-----------------------------
+
+- Slides : v4.1
+- Angular CLI : v1.3.2
+- Angular : v4.3.6
 
 ## AVANT DE DÉMARRER LES EXERCICES
 
@@ -22,6 +26,7 @@ $ npm install -g @angular/cli
 ```
 
 Téléchargez le fichier [EXO_STARTER.zip](EXO_STARTER.zip), qui contient :
+
 - Le support de cours en PDF.
 - Les fichiers pour faire les exercices.
 
@@ -35,7 +40,7 @@ Téléchargez le fichier [EXO_STARTER.zip](EXO_STARTER.zip), qui contient :
 $ ng new superquiz
 $ cd superquiz
 
-# Supprimer le dépôt git
+# Supprimer le dépôt git s'il est présent
 # Équivalent Windows: rmdir /s /q .git
 $ rm -rf .git
 ```
@@ -48,9 +53,11 @@ Ensuite, lancez la compilation et le serveur de développement avec cette comman
 $ ng serve
 ```
 
-Ouvrez votre navigateur à l'adresse http://localhost:4200/. Voyez-vous le texte "app works!" ?
+Ouvrez votre navigateur à l'adresse http://localhost:4200/. Voyez-vous l'écran d'accueil de l'application ?
 
-Ouvrez le répertoire de l'application dans votre IDE. Si vous modifiez le texte `'app works!'` situé dans `src/app/app.component.ts` puis enregistrez, voyez-vous le texte modifié apparaître automatiquement dans votre navigateur ?
+![Écran d'accueil de l'application angular-cli](images/ng-new-welcome-screen.png)
+
+Ouvrez le répertoire de l'application dans votre IDE. Si vous modifiez le texte de la variable `title` situé dans `src/app/app.component.ts`, puis enregistrez, voyez-vous le texte modifié apparaître automatiquement dans votre navigateur ?
 
 ### Personnaliser l'appli angular-cli
 
@@ -89,14 +96,14 @@ Observez le code, et essayez d'expliquer ce qu'est `AppComponent` ?
 Angular est donc parti de `main.ts` pour initialiser l'application. Mais comment cette application (constituée de code JavaScript) est-elle reliée à la page `index.html` ? Quel est le lien entre les deux ?
 
 
-
+<!--
 ## EXO 0 bis : Comprendre JavaScript
 
 Utilisons le traditionnel exemple de la "todo list" pour mettre en oeuvre quelques uns des concepts JavaScript que nous venons de voir.
 
 Copiez TEMPORAIREMENT le code suivant dans `app.component.ts` :
 
-```ts
+```typescript
 import { Component } from '@angular/core';
 
 @Component({
@@ -114,7 +121,7 @@ import { Component } from '@angular/core';
     </p>
   `
 })
-export class TodoComponent {
+export class AppComponent {
   todos: string[] = ['Acheter du lait', 'Payer facture téléphonique'];
 
   add(newTodo) {
@@ -128,39 +135,58 @@ export class TodoComponent {
 ```
 
 Faites en sorte qu'il soit possible :
+
 - D'ajouter des todos en saisissant du texte dans le champ texte, puis clic sur "Ajouter".
 - De retirer des todos en cliquant sur la croix devant chaque todo.
-
+-->
 
 
 ## EXO 1 : Comprendre TypeScript
 
-**1) Identifier les syntaxes TypeScript**
+### 1) Identifier les syntaxes TypeScript
 
-Lister les endroits où les syntaxes TypeScript suivantes ont été utilisées dans l'application :
+Ouvrez le fichier `app.module.ts` de notre application Angular, et identifiez les syntaxes suivantes du langage TypeScript :
 
-- Classes
-- Décorateurs - Comment Angular utilise les décorateurs ?
-- Modules
-- Qu'est-ce qui rend un symbole importable ? Quels sont les 2 types d'import qu'on trouve dans l'appli ?
+- Classe
+- Décorateur
+- Module
+- Quels sont les 2 types d'import qu'on trouve dans ce fichier ?
+- Quels symboles déclarés dans ce fichier sont importables depuis d'autres fichiers ?
 - Types TypeScript
 
-**2) Utiliser d'autres fonctionnalités de TypeScript**
+### 2) Utiliser d'autres fonctionnalités de TypeScript
 
-Modifiez le code de `AppComponent` pour utiliser les fonctionnalités suivantes du langage TypeScript :
+Ouvrez maintenant le fichier `app.component.ts` de l'application, et effectuez les modifications suivantes :
 
-- Ajouter une **méthode** `updateTitle()` dans `AppComponent`. Cette méthode devra être déclenchée quand on clique sur un bouton et changer la valeur de la propriété `title`. Voici le code HTML du bouton à mettre dans le template : `<button (click)="updateTitle()">Change le titre</button>`
-- Au lieu de coder le titre en dur dans `AppComponent`, récupérez-le via une classe. Dans le fichier de `AppComponent`, créer une **simple classe** `DataService` avec une méthode `getTitle()` qui renvoie le titre.
-- Au lieu d'utiliser un template externe pour le composant (propriété `templateUrl`), utilisez un template en ligne (propriété `template`) avec la syntaxe **template-chaîne**.
+- Au lieu de coder la variable `title` en dur, récupérez sa valeur via une méthode classe. Pour cela, dans le fichier `app.component.ts`, créez une **simple classe** `DataService` avec une méthode `getTitle()` qui renvoie le titre.
+- Au lieu d'utiliser un template externe pour le composant, utilisez un template en ligne avec la syntaxe **template-chaîne**. Pour que cela fonctionne, il faudra renommer la propriété `templateUrl` en `template`.
 - Ajouter des **types TypeScript** partout où c'est possible.
+- Enfin, déplacez la classe `DataService` dans son propre fichier (tout en continuant à l'utiliser dans `AppComponent`).
 
-CHALLENGE : Déplacez la classe `DataService` dans son propre fichier (en continuant à l'utiliser dans `AppComponent`).
 
-**3) Créer un 2e composant**
 
-Toujours dans le fichier `app.component.ts`, essayez de créer un 2e composant `NavigationComponent` qui affiche un menu de navigation (utilisez du HTML bidon). Vous afficherez ce composant dans le template de `AppComponent`.
+## EXO 1 bis : Comprendre le modèle de données
 
-BONNE PRATIQUE : À quoi faut-il faire attention **à chaque fois** qu'on crée un nouveau composant ?
+Copiez temporairement la classe suivante dans `app.component.ts`, et implémentez chacune de ses méthodes de sorte qu'elles manipulent le modèle de données qu'on vient de passer en revue.
+
+```typescript
+export class QuizService {
+
+  // Crée un quiz vierge en ne spécifiant que les propriétés obligatoires.
+  createQuiz() {
+    // const quiz = ???
+  }
+
+  // Crée une question dont le libellé est :
+  //   "Angular a été créé en 2010."
+  // Et les choix possibles sont :
+  //   - Vrai
+  //   - Faux
+  createQuestion(todo) {
+    // const question = ???
+  }
+}
+```
 
 
 
@@ -169,6 +195,7 @@ BONNE PRATIQUE : À quoi faut-il faire attention **à chaque fois** qu'on crée 
 ### Créer la structure générale de page
 
 Toutes les pages de notre application seront organisées en 3 blocs :
+
 1. Barre de navigation
 2. Contenu
 3. Pied de page
@@ -218,7 +245,10 @@ Pour afficher cette structure navigation/contenu/pied de page, commencez par cop
 
 On ne veut pas afficher tout le HTML dans UN SEUL composant.
 
-Sortez le HTML de la **barre de navigation** dans un composant `NavbarComponent`, et le HTML du **pied de page** dans `FooterComponent`.
+Refactorisez :
+
+- Le HTML de la **barre de navigation** dans un composant `NavbarComponent`.
+- Le HTML du **pied de page** dans `FooterComponent`.
 
 Vous créerez ces composants avec angular-cli :
 
@@ -228,13 +258,11 @@ $ ng g component common/navbar
 $ ng g component common/footer
 ```
 
-Bien-sûr, il faudra ensuite ré-afficher ces composants dans `AppComponent` grâce à leur balise.
+Bien-sûr, il faudra ensuite ré-afficher ces composants dans le template de `AppComponent` grâce à leur balise.
 
 ### Penchons-nous sur `ng g component`
 
 Listez les tâches réalisées par la commande `ng g component`.
-
-Quels sont les pour et les contre d'utiliser cette commande ?
 
 
 
@@ -262,11 +290,55 @@ Dans un prochain exercice, nous permettrons à l'utilisateur de cliquer sur un q
 
 
 
-## EXO 4 : Afficher le détail d'une question + réponses possibles (`QuizQuestionComponent`)
+## EXO 4 : Sélectionner un élément dans une liste
+
+Dans cet exercice, nous allons implémenter un pattern extrêmement répandu : permettre à l'utilisateur de sélectionner un élément dans une liste. (L'équivalent d'un bouton radio dans un formulaire.)
+
+![Item sélectionné dans une liste](images/select-item-in-list.png)
+
+### Réfléchissons ensemble
+
+- Listez les propriétés (modèle de données) et les méthodes qui vont nous permettre d'implémenter ce pattern. NB. On suppose que l'utilisateur ne peut sélectionner qu'UN SEUL ÉLÉMENT à la fois.
+- Si on veut permettre à l'utilisateur de sélectionner *plusieurs* éléments dans la liste, que faut-il changer dans les propriétés et les méthodes ?
+
+### À vous de coder
+
+**1) Créez un composant `ExoSelectItemComponent` avec angular-cli**
+
+Avec le template suivant :
+
+```html
+<div class="list-group">
+  <a class="list-group-item">
+    <h4 class="list-group-item-heading">Choix 1</h4>
+  </a>
+  <a class="list-group-item">
+    <h4 class="list-group-item-heading">Choix 2</h4>
+  </a>
+  <a class="list-group-item">
+    <h4 class="list-group-item-heading">Choix 3</h4>
+  </a>
+</div>
+<button class="btn btn-primary">Valider</button>
+```
+
+Comme d'habitude, vous afficherez ce composant dans le template de `AppComponent`.
+
+**2) Faites en sorte qu'il soit possible de sélectionner un choix (et seulement un) en cliquant dessus**
+
+Pour afficher en surbrillance le choix sélectionné, vous ajouterez dynamiquement la classe CSS `active` à la balise `<a>` correspondante.
+
+**3) Affichez le choix sélectionné**
+
+Quand on clique sur le bouton "Valider", le choix actuellement sélectionné doit s'afficher dans la console.
+
+## EXO 4 bis : Afficher le détail d'une question + réponses possibles (`QuizQuestionComponent`)
 
 Imaginons qu'un utilisateur soit en train de répondre à l'une des questions d'un quiz.
 
-Il voit **la question et les réponses possibles**.
+Il voit **la question et les réponses possibles** :
+
+![Question de quiz](images/quiz-question.png)
 
 Pour générer cet écran, nous allons utiliser un composant **déjà créé** `QuizQuestionComponent` (fichier `quiz-question.component.ts`). TOUT L'EXERCICE SE FERA DANS CE COMPOSANT.
 
@@ -274,7 +346,7 @@ Pour générer cet écran, nous allons utiliser un composant **déjà créé** `
 
 Affichez `QuizQuestionComponent` dans le template de `AppComponent` afin de visualiser vos modifs.
 
-Dans ce template, vous pouvez supprimer la balise `<quiz-list></quiz-list>` correspondant à l'exercice précédent.
+Remarque : Dans ce template, vous pouvez supprimer la balise `<app-quiz-list></app-quiz-list>` correspondant à l'exercice précédent.
 
 **2) Déclarez les propriétés du composant**
 
@@ -291,7 +363,7 @@ Utilisez la méthode `initState()` (appelée depuis le constructeur) pour affect
 
 Pour `question` et `answer`, vous utiliserez des données en dur pour le moment :
 
-```ts
+```typescript
 this.question = new Question({
   "id": 12,
   "questionType": "multiple_choice",
@@ -309,7 +381,7 @@ this.answer = new Answer({questionId: 12});  // réponse "vierge"
 **4) Affichez la question et récoltez le ou les choix sélectionné(s)**
 
 - Aux endroits appropriés du template, affichez la question en cours et ses différents choix possibles.
-- Affichez le message "Plusieurs réponses possibles" uniquement si la question accepte plusieurs réponses (`question.multipleChoicesAllowed == true`).
+- Affichez le message "Plusieurs réponses possibles" uniquement si la question accepte plusieurs réponses (propriété `question.multipleChoicesAllowed == true`).
 - Quand on clique sur un choix, il doit s'afficher en surbrillance (en ajoutant la classe `active` sur la balise `<a>` du choix). Si on le reclique, il s'éteint. Si la question accepte plusieurs réponses, il faut pouvoir sélectionner plusieurs choix. Pour ces comportements, vous utiliserez les méthodes `clickChoice()` et `isChoiceSelected()` du composant.
 
 **5) Gérez la soumission de la réponse**
@@ -317,6 +389,7 @@ this.answer = new Answer({questionId: 12});  // réponse "vierge"
 Désactiver le bouton "Soumettre" si l'utilisateur n'a pas fait au moins un choix (`<button [disabled]="true">`).
 
 Au clic sur "Soumettre" :
+
 - Loggez la réponse en cours dans la console.
 - Changez la valeur de `isSubmitted`.
 - Changer le libellé et la couleur du bouton "Soumettre" en fonction de la réponse :
@@ -350,6 +423,7 @@ Créez un composant `QuizPlayerComponent` avec angular-cli.
 Ce composant est "smart", c'est lui qui va déterminer le **quiz en cours**, la **question en cours**... et qui transmettra ces données à ses enfants.
 
 Pour l'instant, contentez-vous d'initialiser deux propriétés avec des données en dur :
+
 - `question` (question en cours) 
 - `answer` (réponse en cours)
 
@@ -357,13 +431,14 @@ Pour l'instant, contentez-vous d'initialiser deux propriétés avec des données
 
 Le `QuizQuestionComponent` est devenu "dumb". Il communique avec l'extérieur uniquement via des inputs/outputs.
 
-- Transformez en **inputs** les propriétés `question` (question en cours) et `answer` (réponse en cours). ATTENTION, cela signifie que ces propriétés ne doivent plus être initialisées dans la méthode `initState()` du composant, mais en recevant des données depuis le composant parent.
+- Transformez en **inputs** les propriétés `question` (question en cours) et `answer` (réponse en cours). ATTENTION, cela signifie que ces propriétés ne doivent plus être initialisées via la méthode `initState()` du composant, mais en recevant des données depuis le composant parent.
 - Les propriétés `isAnswered` et `isSubmitted` sont toujours initialisées dans le composant, mais la méthode `initState()` doit maintenant être appelée depuis `ngOnInit()` car elle utilise les valeurs des inputs.
 - Créez un **output** `onSubmitAnswer` qui transmettra au composant parent la réponse en cours lors du clic sur le bouton "Soumettre".
 
 ### Relier les 2 composants, smart et dumb
 
 Dans le template du composant parent `QuizPlayerComponent` :
+
 - Passez les variables `question` et `answer` aux inputs du `QuizQuestionComponent`.
 - Réagissez à l'événement `onSubmitAnswer` de l'enfant en appelant une méthode qui logge dans la console la réponse reçue.
 
@@ -376,7 +451,8 @@ Dans cet exercice, on va permettre à l'utilisateur de passer d'une question à 
 
 On suppose que l'utilisateur **a déjà choisi un quiz précis**.
 
-Fonctionnalités souhaitées :
+### Passons en revue les fonctionnalités souhaitées
+
 - Le premier écran affiché contient le titre et la description du quiz, et un bouton "Démarrer".
 - Au clic sur "Démarrer", la première question du quiz est affichée.
 - L'utilisateur peut choisir une réponse et la soumettre, puis cliquer "Suivant" pour passer à la question suivante.
@@ -391,17 +467,21 @@ Le quiz player doit maintenant utiliser le service `QuizStateManager` (déjà co
 
 Voici les tâches à effectuer dans `QuizPlayerComponent` :
 
-1) Injectez le service `QuizStateManager` dans le quiz player grâce à l'injection de dépendance.
+**1) Injectez le service `QuizStateManager` dans le quiz player**
 
-2) À l'initialisation du quiz player, définissez le quiz en cours. Pour cela, appelez `QuizStateManager.setQuiz()` et passez-lui le quiz `QUIZ_WITH_QUESTIONS` issu du fichier `data/quiz-with_questions.ts`.
+En utilisant l'injection de dépendance.
+
+**2) À l'initialisation du quiz player, définissez le quiz en cours**
+
+Pour cela, appelez `QuizStateManager.setQuiz()` et passez-lui le quiz `QUIZ_WITH_QUESTIONS` issu du fichier `data/quiz-with_questions.ts`.
 
 *À terme, on récupérera l'id du quiz à afficher dans l'URL et on le chargera depuis la base de données.*
 
-3) Déclarez les propriétés permettant de gérer l'état de l'application :
+**3) Déclarez les propriétés permettant de gérer l'état de l'application**
 
-```ts
+```typescript
 quizPlaying: boolean = false;              // true if the "Start" button has been clicked
-currentQuiz: Observable<Quiz>;             // Quiz being played
+currentQuiz: Observable<app-quiz>;             // Quiz being played
 currentQuestion: Observable<Question>;     // Question being displayed
 currentAnswer: Observable<Answer>;         // Answer for the question being displayed
 currentAnswers: Observable<AnswersState>;  // All answers submitted so far, keyed by questionId
@@ -409,7 +489,7 @@ currentAnswers: Observable<AnswersState>;  // All answers submitted so far, keye
 
 Vous instancierez les observables ci-dessus avec les différentes valeurs renvoyées par le `QuizStateManager`, par exemple :
 
-```ts
+```typescript
 this.currentQuiz = quizStateManager.getCurrentQuiz();
 ```
 
@@ -437,7 +517,7 @@ Si `quizPlaying` vaut `false`, affichez le bouton "Démarrer" qui suit :
 </p>
 ```
 
-Si `quizPlaying` vaut `true`, affichez le composant `<quiz-question>` créé précédemment.
+Si `quizPlaying` vaut `true`, affichez le composant `<app-quiz-question>` créé précédemment.
 
 Au clic sur le bouton "Démarrer", vous déclencherez une méthode (à créer) qui démarre le quiz.
 
@@ -491,11 +571,11 @@ NB. Le bouton "Soumettre le quiz" ne doit être affiché que si on est à la der
 
 Retournez maintenant dans le quiz player.
 
-Affichez le composant `<quiz-nav>` dans le template, au-dessus de `<quiz-question>`.
+Affichez le composant `<app-quiz-nav>` dans le template, au-dessus de `<app-quiz-question>`.
 
-Passez à `<quiz-nav>` tous les **inputs** qu'il attend.
+Passez à `<app-quiz-nav>` tous les **inputs** qu'il attend.
 
-Écoutez tous les **outputs** émis par `<quiz-nav>`, et réagissez en appelant des méthodes (à créer) qui mettent à jour l'état de l'application.
+Écoutez tous les **outputs** émis par `<app-quiz-nav>`, et réagissez en appelant des méthodes (à créer) qui mettent à jour l'état de l'application.
 
 
 
@@ -525,7 +605,7 @@ Cela veut dire :
 Pour résoudre ce problème, il faut :
 
 - Importer `QuizModule` dans `AppModule`.
-- OPTIONNEL. Mettre dans la propriété `exports` de `QuizModule` les composants qu'on veut pouvoir utiliser directement dans `AppModule`. Par exemple, pour que notre code actuel continue à fonctionner, il faut exporter `QuizPlayerComponent`, car son sélecteur `<quiz-player>` est utilisé dans le template du `AppComponent`.
+- OPTIONNEL. Mettre dans la propriété `exports` de `QuizModule` les composants qu'on veut pouvoir utiliser directement dans `AppModule`. Par exemple, pour que notre code actuel continue à fonctionner, il faut exporter `QuizPlayerComponent`, car son sélecteur `<app-quiz-player>` est utilisé dans le template du `AppComponent`.
 
 Remarque. Dans la version définitive de l'appli, tous les composants du QuizModule seront affichés via les routes de ce module. Il ne sera donc pas nécessaire de les exporter.
 
@@ -678,7 +758,7 @@ Assurez-vous que le **type** retourné par chaque méthode est TOUJOURS un `Obse
 
 La requête `loadQuiz()` est complexe car elle doit *combiner les données renvoyées par deux observables*. Utilisez l'opérateur RxJS `combineLatest()` pour résoudre le problème :
 
-```ts
+```typescript
 // 1er observable - Récupère le quiz
 const obs1 = this.http.get()...;
 
@@ -718,7 +798,7 @@ Un module `AdminModule` a **déjà été créé**. Il est destiné à recevoir t
 
 Dans les routes du module principal, ajoutez une route qui charge le module d'admin en *lazy loading* :
 
-```ts
+```typescript
 { path: 'admin', loadChildren: 'app/admin/admin.module#AdminModule' },
 ```
 
@@ -908,7 +988,7 @@ Pourquoi ? Pour pouvoir utiliser les settings dans l'injection de dépendance.
 
 Jusqu'à maintenant, tous les providers utilisés étaient des **services**, mais on peut aussi utiliser de **simples valeurs**, avec la syntaxe suivante :
 
-```ts
+```typescript
 // app.module.ts
 providers: [
   { provide: 'GOOGLE_CLIENT_ID', useValue: '__COPIE_VOTRE_GOOGLE_CLIENT_ID__' }
@@ -924,7 +1004,7 @@ Un service d'authentification `AuthService` (`services/auth.service.ts`) qui uti
 
 Toutes les méthodes de `AuthService` renvoient des promesses qui s'utilisent comme suit :
 
-```ts
+```typescript
 promise
   .then(result => console.log('Successful promise with value:', result))
   .catch(error => console.error('Rejected promise with error:', error));
@@ -1003,7 +1083,7 @@ Redéfinissez le fonctionnement des requêtes dans `app/app-request-options.ts` 
 
 Ensuite, faites en sorte que les options customisées remplacent le `RequestOptions` par défaut en déclarant le provider suivant dans `AppModule` :
 
-```ts
+```typescript
 { provide: RequestOptions, useClass: AppRequestOptions }
 ```
 
@@ -1018,7 +1098,7 @@ Ensuite, faites en sorte que les options customisées remplacent le `RequestOpti
 
 Pour valider votre configuration de test, créez votre premier test dans le fichier `app/1st.spec.ts` avec le code suivant :
 
-```ts
+```typescript
 describe('1st tests', () => {
   it('true is true', () => expect(true).toBe(true));
 });
