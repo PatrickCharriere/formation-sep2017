@@ -811,7 +811,7 @@ Créez un composant `AdminQuizFormComponent` à l'intérieur du module d'admin (
 
 Utilisez le HTML suivant pour le template :
 
-```
+```html
 <form novalidate>
 
   <div class="form-group">
